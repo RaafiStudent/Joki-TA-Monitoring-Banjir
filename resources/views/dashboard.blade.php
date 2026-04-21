@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Monitoring Banjir</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="transition-colors duration-500 
     {{ $latest->water_level > 150 ? 'bg-red-600' : ($latest->water_level >= 100 ? 'bg-orange-500' : 'bg-green-500') }}">
