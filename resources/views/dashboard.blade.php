@@ -1,57 +1,7 @@
 <x-app-layout>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        brand: {
-                            50: '#eff6ff',
-                            100: '#dbeafe',
-                            500: '#3b82f6',
-                            600: '#2563eb', 
-                            800: '#1e40af', 
-                            900: '#1e3a8a', 
-                            950: '#0f172a',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-    </style>
-
     <x-slot name="bodyClass">
         bg-slate-50 text-slate-800 antialiased selection:bg-cyan-500 selection:text-white overflow-x-hidden
     </x-slot>
-
-    <nav class="fixed w-full top-0 z-50 bg-slate-900/80 backdrop-blur-lg border-b border-slate-800 transition-all">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-xl bg-cyan-500 flex items-center justify-center shadow-lg shadow-cyan-500/40">
-                    <svg class="w-5 h-5 text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                </div>
-                <span class="font-bold text-xl tracking-tight text-white">Flood<span class="text-cyan-400">Monitor</span></span>
-            </div>
-            
-            <div class="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-300">
-                <a href="#home" class="hover:text-cyan-400 transition-colors">Beranda</a>
-                <a href="#monitoring" class="hover:text-cyan-400 transition-colors">Dashboard</a>
-                <a href="#info" class="hover:text-cyan-400 transition-colors">Informasi</a>
-                <a href="#tentang" class="hover:text-cyan-400 transition-colors">Tentang</a>
-            </div>
-
-            <div>
-                <a href="#" class="px-6 py-2.5 text-sm font-bold text-slate-900 bg-cyan-400 hover:bg-cyan-300 rounded-xl shadow-lg shadow-cyan-500/30 transition-all hover:-translate-y-0.5">Login Admin</a>
-            </div>
-        </div>
-    </nav>
 
     <section id="home" class="relative pt-32 pb-24 lg:pt-52 lg:pb-40 overflow-hidden bg-brand-950 text-white flex flex-col justify-center min-h-screen">
         <div class="absolute inset-0 bg-gradient-to-b from-slate-900 via-brand-950 to-slate-900 -z-20"></div>
