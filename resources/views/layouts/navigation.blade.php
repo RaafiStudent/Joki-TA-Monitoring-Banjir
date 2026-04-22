@@ -1,58 +1,81 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100 shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <div class="flex">
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ route('monitoring') }}">
-                        <div class="font-bold text-xl text-blue-600 tracking-tighter">FLOOD-EWS</div>
-                    </a>
-                </div>
-
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('monitoring')" :active="request()->routeIs('monitoring')">
-                        {{ __('Monitoring Utama') }}
-                    </x-nav-link>
-                    @auth
-                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                            {{ __('Panel Admin') }}
-                        </x-nav-link>
-                    @endauth
-                </div>
+<nav x-data="{ scrolled: false, open: false }" 
+     @scroll.window="scrolled = (window.pageYOffset > 20) ? true : false"
+     :class="scrolled ? 'bg-black/70 border-white/10 py-3 shadow-2xl' : 'bg-transparent border-transparent py-6'"
+     class="fixed top-0 w-full z-[100] transition-all duration-500 border-b backdrop-blur-md">
+    
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="flex justify-between items-center">
+            
+            <div class="flex items-center gap-4">
+                <a href="{{ route('monitoring') }}" class="group flex items-center gap-3">
+                    <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/40 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-white text-xl font-black tracking-tighter leading-none uppercase">Flood.EWS</span>
+                        <span class="text-[8px] text-blue-400 font-bold tracking-[0.3em] uppercase opacity-80">BPBD Integrated</span>
+                    </div>
+                </a>
             </div>
 
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
+            <div class="hidden md:flex items-center gap-10">
+                <a href="{{ route('monitoring') }}" 
+                   class="text-[11px] font-bold uppercase tracking-[0.2em] transition-all duration-300 {{ request()->routeIs('monitoring') ? 'text-blue-500' : 'text-white/60 hover:text-white' }}">
+                    Home
+                </a>
+                <a href="#dashboard" class="text-[11px] font-bold uppercase tracking-[0.2em] text-white/60 hover:text-white transition-all">
+                    Dashboard
+                </a>
+                <a href="#tentang" class="text-[11px] font-bold uppercase tracking-[0.2em] text-white/60 hover:text-white transition-all">
+                    Tentang
+                </a>
+                <a href="#kontak" class="text-[11px] font-bold uppercase tracking-[0.2em] text-white/60 hover:text-white transition-all">
+                    Kontak
+                </a>
+            </div>
+
+            <div class="flex items-center gap-4">
                 @auth
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
-                            <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                                <div>{{ Auth::user()->name }}</div>
-                                <div class="ms-1">
-                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                    </svg>
+                            <button class="flex items-center gap-3 px-4 py-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all group">
+                                <div class="text-right hidden sm:block">
+                                    <p class="text-[10px] font-black text-white leading-none uppercase">{{ Auth::user()->name }}</p>
+                                    <p class="text-[8px] text-blue-400 font-bold uppercase tracking-widest mt-1">Petugas Aktif</p>
+                                </div>
+                                <div class="w-8 h-8 rounded-lg bg-blue-600/20 flex items-center justify-center text-blue-400 text-xs font-bold border border-blue-600/30">
+                                    {{ substr(Auth::user()->name, 0, 1) }}
                                 </div>
                             </button>
                         </x-slot>
 
                         <x-slot name="content">
-                            <x-dropdown-link :href="route('profile.edit')">
-                                {{ __('Profile Settings') }}
-                            </x-dropdown-link>
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <x-dropdown-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
-                                    {{ __('Log Out') }}
-                                </x-dropdown-link>
-                            </form>
+                            <div class="px-4 py-2 border-b border-white/5 mb-1">
+                                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Administrator Menu</p>
+                            </div>
+                            <x-dropdown-link :href="route('dashboard')">{{ __('Panel Dashboard') }}</x-dropdown-link>
+                            <x-dropdown-link :href="route('profile.edit')">{{ __('Pengaturan Profil') }}</x-dropdown-link>
+                            <div class="border-t border-white/5 mt-1">
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <x-dropdown-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();" class="text-red-400 font-bold">
+                                        {{ __('Keluar Sistem') }}
+                                    </x-dropdown-link>
+                                </form>
+                            </div>
                         </x-slot>
                     </x-dropdown>
                 @else
-                    <a href="{{ route('login') }}" class="text-sm text-gray-700 underline font-semibold">Login Petugas</a>
+                    <a href="{{ route('login') }}" 
+                       class="relative group px-7 py-3 rounded-full overflow-hidden bg-blue-600 text-white shadow-lg shadow-blue-600/30 transition-all hover:scale-105 active:scale-95">
+                        <span class="relative z-10 text-[10px] font-black uppercase tracking-widest">Login Petugas</span>
+                        <div class="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </a>
                 @endauth
-            </div>
 
-            <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+                <button @click="open = ! open" class="md:hidden p-2 rounded-xl bg-white/5 border border-white/10 text-white">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -62,35 +85,19 @@
         </div>
     </div>
 
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('monitoring')" :active="request()->routeIs('monitoring')">
-                {{ __('Monitoring') }}
-            </x-responsive-nav-link>
+    <div x-show="open" 
+         x-transition:enter="transition ease-out duration-200"
+         x-transition:enter-start="opacity-0 -translate-y-4"
+         x-transition:enter-end="opacity-100 translate-y-0"
+         class="md:hidden absolute w-full bg-[#020617]/95 backdrop-blur-2xl border-b border-white/10 px-6 py-8">
+        <div class="flex flex-col gap-6">
+            <a href="{{ route('monitoring') }}" class="text-lg font-bold text-white">Home</a>
+            <a href="#dashboard" @click="open = false" class="text-lg font-bold text-white/60">Dashboard</a>
+            <a href="#tentang" @click="open = false" class="text-lg font-bold text-white/60">Tentang</a>
+            <a href="#kontak" @click="open = false" class="text-lg font-bold text-white/60">Kontak</a>
+            @guest
+                <a href="{{ route('login') }}" class="py-4 rounded-2xl bg-blue-600 text-center text-sm font-bold uppercase tracking-widest">Login Petugas</a>
+            @endguest
         </div>
-
-        @auth
-            <div class="pt-4 pb-1 border-t border-gray-200">
-                <div class="px-4">
-                    <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-                </div>
-                <div class="mt-3 space-y-1">
-                    <x-responsive-nav-link :href="route('profile.edit')">
-                        {{ __('Profile') }}
-                    </x-responsive-nav-link>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <x-responsive-nav-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
-                            {{ __('Log Out') }}
-                        </x-responsive-nav-link>
-                    </form>
-                </div>
-            </div>
-        @else
-            <div class="py-3 border-t border-gray-200 px-4">
-                <a href="{{ route('login') }}" class="text-base font-medium text-blue-600">Login Petugas</a>
-            </div>
-        @endauth
     </div>
 </nav>
